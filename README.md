@@ -23,4 +23,3 @@ go build && ./simple-demo
 ### 测试数据
 
 测试数据写在 demo_data.go 中，用于列表接口的 mock 测试
->>>>>>> develop
