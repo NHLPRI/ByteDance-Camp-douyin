@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"sync/atomic"
+
+	"github.com/gin-gonic/gin"
 )
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
@@ -33,6 +34,7 @@ type UserResponse struct {
 }
 
 func Register(c *gin.Context) {
+	//客户端是将用户名和密码保存到URL参数中传递
 	username := c.Query("username")
 	password := c.Query("password")
 
@@ -58,6 +60,7 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
+	//客户端将登录页面的username和password封装到URL参数中
 	username := c.Query("username")
 	password := c.Query("password")
 

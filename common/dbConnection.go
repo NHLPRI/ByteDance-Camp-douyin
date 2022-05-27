@@ -60,6 +60,8 @@ func InitDbConnection() *gorm.DB {
 		panic("failed to connect database: err>>>" + err.Error())
 	}
 
+	//自动创建表
+
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")
 	return db

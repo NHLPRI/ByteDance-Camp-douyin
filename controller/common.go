@@ -22,6 +22,7 @@ type Comment struct {
 	CreateDate string `json:"create_date,omitempty"`
 }
 
+//这里的User更多是作为DTO（数据传输对象）而非实体类
 type User struct {
 	Id            int64  `json:"id,omitempty"`
 	Name          string `json:"name,omitempty"`
