@@ -13,6 +13,7 @@ import (
 
 var DB *gorm.DB
 
+//获取数据库对象
 func GetDB() *gorm.DB {
 	return DB
 }
@@ -59,8 +60,6 @@ func InitDbConnection() *gorm.DB {
 	if err != nil {
 		panic("failed to connect database: err>>>" + err.Error())
 	}
-
-	//自动创建表
 
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")

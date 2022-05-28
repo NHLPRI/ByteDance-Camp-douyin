@@ -41,6 +41,7 @@ func Register(c *gin.Context) {
 	token := username + password
 
 	if _, exist := usersLoginInfo[token]; exist {
+		//用户存在
 		c.JSON(http.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
 		})
