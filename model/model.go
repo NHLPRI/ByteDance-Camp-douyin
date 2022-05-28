@@ -13,7 +13,6 @@ type User struct {
 
 type Video struct {
 	gorm.Model
-	User           User `gorm:"ForeignKey:UserID"`
 	UserID         uint
 	PlayURL        string
 	CoverURL       string
