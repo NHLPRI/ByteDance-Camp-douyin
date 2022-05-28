@@ -4,13 +4,16 @@ import (
 	"net/http"
 	"sync/atomic"
 
+	"github.com/RaymondCode/simple-demo/dto"
 	"github.com/gin-gonic/gin"
 )
+
+//本文件逻辑为官方所给的演示逻辑，已完成全部逻辑替换，可删除
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
 // user data will be cleared every time the server starts
 // test data: username=zhanglei, password=douyin
-var usersLoginInfo = map[string]User{
+var usersLoginInfo = map[string]dto.UserDto{
 	"zhangleidouyin": {
 		Id:            1,
 		Name:          "zhanglei",
@@ -21,17 +24,6 @@ var usersLoginInfo = map[string]User{
 }
 
 var userIdSequence = int64(1)
-
-type UserLoginResponse struct {
-	Response
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token"`
-}
-
-type UserResponse struct {
-	Response
-	User User `json:"user"`
-}
 
 func Register(c *gin.Context) {
 	//客户端是将用户名和密码保存到URL参数中传递
@@ -47,7 +39,7 @@ func Register(c *gin.Context) {
 		})
 	} else {
 		atomic.AddInt64(&userIdSequence, 1)
-		newUser := User{
+		newUser := dto.UserDto{
 			Id:   userIdSequence,
 			Name: username,
 		}
@@ -90,7 +82,7 @@ func UserInfo(c *gin.Context) {
 		})
 	} else {
 		c.JSON(http.StatusOK, UserResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
+			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist !!!"},
 		})
 	}
 }

@@ -26,6 +26,7 @@ func InitUserDao() UserDao {
 
 //添加表记录方法
 func (u *UserDao) Create(user *model.User) (*model.User, error) {
+	log.Println("[userDao create]")
 	err := u.db.Create(user).Error
 	if err != nil {
 		return nil, err
@@ -35,6 +36,7 @@ func (u *UserDao) Create(user *model.User) (*model.User, error) {
 
 //用户ID查询记录
 func (u *UserDao) QueryById(id int64) (*model.User, error) {
+	log.Println("[userDao queryById]")
 	var user model.User
 	err := u.db.First(&user, id).Error
 	if err != nil {
@@ -45,10 +47,20 @@ func (u *UserDao) QueryById(id int64) (*model.User, error) {
 
 //用户name查询记录
 func (u *UserDao) QueryByName(name string) *model.User {
+	log.Println("[userDao queryByName]")
 	var user model.User
 	u.db.Where("name = ?", name).First(&user)
 	if user.ID != 0 {
 		return &user
 	}
 	return nil
+}
+
+//更新表记录
+func (u *UserDao) Update(newUser *model.User) (*model.User, error) {
+	err := u.db.Save(newUser).Error
+	if err != nil {
+		return nil, err
+	}
+	return newUser, nil
 }

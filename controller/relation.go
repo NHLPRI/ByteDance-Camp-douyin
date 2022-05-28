@@ -1,13 +1,15 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/gin-gonic/gin"
 )
 
 type UserListResponse struct {
 	Response
-	UserList []User `json:"user_list"`
+	UserList []dto.UserDto `json:"user_list"`
 }
 
 // RelationAction no practical effect, just check if token is valid
@@ -27,7 +29,7 @@ func FollowList(c *gin.Context) {
 		Response: Response{
 			StatusCode: 0,
 		},
-		UserList: []User{DemoUser},
+		UserList: []dto.UserDto{DemoUser},
 	})
 }
 
@@ -37,6 +39,6 @@ func FollowerList(c *gin.Context) {
 		Response: Response{
 			StatusCode: 0,
 		},
-		UserList: []User{DemoUser},
+		UserList: []dto.UserDto{DemoUser},
 	})
 }
