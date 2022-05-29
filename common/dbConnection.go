@@ -6,10 +6,9 @@ import (
 	"os"
 
 	"github.com/RaymondCode/simple-demo/model"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var DB *gorm.DB
@@ -75,6 +74,15 @@ func InitDbConnection() *gorm.DB {
 	initTable(db)
 	log.Println("[Init Table] finish !")
 
+	//db.AutoMigrate(&model.User{}, &model.Video{}, &model.Follow{}, &model.Comment{}, &model.Like{})
+	//
+	////db.Model(&model.Video{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("fans_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")
 	return db
