@@ -2,14 +2,16 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
+
+	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
 	Response
-	VideoList []Video `json:"video_list"`
+	VideoList []dto.VideoDto `json:"video_list"`
 }
 
 // Publish check token then save upload file to public directory

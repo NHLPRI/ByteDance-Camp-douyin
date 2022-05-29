@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/RaymondCode/simple-demo/model"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 
@@ -30,6 +31,15 @@ func initConfig() {
 	if err != nil {
 		log.Println("[InitConfig error]>>>", err)
 	}
+}
+
+//初始化数据库表
+func initTable(db *gorm.DB) {
+	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Video{})
+	db.AutoMigrate(&model.Comment{})
+	db.AutoMigrate(&model.Follow{})
+	db.AutoMigrate(&model.Like{})
 }
 
 //建立数据库连接
@@ -60,6 +70,10 @@ func InitDbConnection() *gorm.DB {
 	if err != nil {
 		panic("failed to connect database: err>>>" + err.Error())
 	}
+
+	//初始化数据库表
+	initTable(db)
+	log.Println("[Init Table] finish !")
 
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")

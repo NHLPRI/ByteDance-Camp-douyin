@@ -4,7 +4,7 @@ import "github.com/RaymondCode/simple-demo/dto"
 
 //本文件用于存储测试用的临时数据
 
-var DemoVideos = []Video{
+var DemoVideos = []dto.VideoDto{
 	{
 		Id:            1,
 		Author:        DemoUser,
@@ -25,7 +25,7 @@ var DemoVideos = []Video{
 	},
 }
 
-var DemoComments = []Comment{
+var DemoComments = []dto.CommentDto{
 	{
 		Id:         1,
 		User:       DemoUser,

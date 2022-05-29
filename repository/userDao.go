@@ -18,7 +18,6 @@ type UserDao struct {
 func InitUserDao() UserDao {
 	//自动创建user表
 	db := common.GetDB()
-	db.AutoMigrate(&model.User{})
 
 	log.Println("[InitUserDao func] success !")
 	return UserDao{db: db}
@@ -58,6 +57,7 @@ func (u *UserDao) QueryByName(name string) *model.User {
 
 //更新表记录
 func (u *UserDao) Update(newUser *model.User) (*model.User, error) {
+	log.Println("[userDao update]")
 	err := u.db.Save(newUser).Error
 	if err != nil {
 		return nil, err
