@@ -12,6 +12,3 @@ type User struct {
 	FollowCount   int64  `json:"follow_count" gorm:"not null"`
 	FollowerCount int64  `json:"follower_count" gorm:"not null"`
 }
-
-type UserDTO struct {
-}
