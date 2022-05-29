@@ -13,6 +13,7 @@ import (
 
 var DB *gorm.DB
 
+//获取数据库对象
 func GetDB() *gorm.DB {
 	return DB
 }
