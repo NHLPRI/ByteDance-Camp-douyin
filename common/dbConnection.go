@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/RaymondCode/simple-demo/model"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
@@ -32,13 +31,17 @@ func initConfig() {
 	}
 }
 
-//初始化数据库表
 func initTable(db *gorm.DB) {
-	db.AutoMigrate(&model.User{})
-	db.AutoMigrate(&model.Video{})
-	db.AutoMigrate(&model.Comment{})
-	db.AutoMigrate(&model.Follow{})
-	db.AutoMigrate(&model.Like{})
+	//db.AutoMigrate(&model.User{}, &model.Video{}, &model.Follow{}, &model.Comment{}, &model.Like{})
+	//
+	//db.Model(&model.Video{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("fans_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
+	//log.Println("[Init Table] finish !")
 }
 
 //建立数据库连接
@@ -71,18 +74,8 @@ func InitDbConnection() *gorm.DB {
 	}
 
 	//初始化数据库表
-	initTable(db)
-	log.Println("[Init Table] finish !")
+	//initTable(db)
 
-	//db.AutoMigrate(&model.User{}, &model.Video{}, &model.Follow{}, &model.Comment{}, &model.Like{})
-	//
-	////db.Model(&model.Video{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Follow{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Follow{}).AddForeignKey("fans_id", "users(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Like{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Like{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	//db.Model(&model.Comment{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")
 	return db
