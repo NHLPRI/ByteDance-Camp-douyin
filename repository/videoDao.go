@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -8,6 +9,11 @@ import (
 
 type VideoDao struct {
 	db *gorm.DB //数据库对象属性
+}
+
+func NewVideoDaoInstance() VideoDao {
+	db := common.GetDB()
+	return VideoDao{db: db}
 }
 
 func (v *VideoDao) Create(video *model.Video) error {
