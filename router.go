@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/RaymondCode/simple-demo/controller"
+	"github.com/RaymondCode/simple-demo/middleware"
 	"github.com/RaymondCode/simple-demo/test"
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,7 @@ func initRouter(r *gin.Engine) {
 	//user apis
 	userController := controller.InitUserController()
 	//apiRouter.GET("/user/", controller.UserInfo)
-	apiRouter.GET("/user/", userController.UserInfo)
+	apiRouter.GET("/user/", middleware.TokenValidate(), userController.UserInfo)
 	//apiRouter.POST("/user/register/", controller.Register)
 	apiRouter.POST("/user/register/", userController.Register)
 	//apiRouter.POST("/user/login/", controller.Login)
@@ -25,19 +26,19 @@ func initRouter(r *gin.Engine) {
 
 	//video apis
 	apiRouter.GET("/feed/", controller.Feed)
-	apiRouter.POST("/publish/action/", controller.Publish)
-	apiRouter.GET("/publish/list/", controller.PublishList)
+	apiRouter.POST("/publish/action/", middleware.TokenValidate(), controller.Publish)
+	apiRouter.GET("/publish/list/", middleware.TokenValidate(), controller.PublishList)
 
 	// extra apis - I
-	apiRouter.POST("/favorite/action/", controller.FavoriteAction)
-	apiRouter.GET("/favorite/list/", controller.FavoriteList)
-	apiRouter.POST("/comment/action/", controller.CommentAction)
-	apiRouter.GET("/comment/list/", controller.CommentList)
+	apiRouter.POST("/favorite/action/", middleware.TokenValidate(), controller.FavoriteAction)
+	apiRouter.GET("/favorite/list/", middleware.TokenValidate(), controller.FavoriteList)
+	apiRouter.POST("/comment/action/", middleware.TokenValidate(), controller.CommentAction)
+	apiRouter.GET("/comment/list/", middleware.TokenValidate(), controller.CommentList)
 
 	// extra apis - II
-	apiRouter.POST("/relation/action/", controller.RelationAction)
-	apiRouter.GET("/relation/follow/list/", controller.FollowList)
-	apiRouter.GET("/relation/follower/list/", controller.FollowerList)
+	apiRouter.POST("/relation/action/", middleware.TokenValidate(), controller.RelationAction)
+	apiRouter.GET("/relation/follow/list/", middleware.TokenValidate(), controller.FollowList)
+	apiRouter.GET("/relation/follower/list/", middleware.TokenValidate(), controller.FollowerList)
 
 	//测试路由
 	testRouter := r.Group("/test")

@@ -3,9 +3,10 @@ package controller
 import (
 	"log"
 	"net/http"
-	"strconv"
 
+	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/service"
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,7 @@ var codeMap = map[int32]string{
 	404: "用户不存在",
 	405: "密码错误",
 	406: "违规操作",
+	407: "权限不足",
 	500: "服务器错误",
 }
 
@@ -48,11 +50,15 @@ func (u *UserController) Login(ctx *gin.Context) {
 	log.Println("[username] ", username)
 	log.Println("[password] ", password)
 
-	//生成token
-	token := username + password
-
 	user, code := u.userService.Login(username, password)
 	msg := codeMap[code]
+
+	//发放token
+	token, err := common.ReleaseToken(user)
+	if err != nil {
+		code = 500
+		log.Println("[error]", err)
+	}
 
 	if code == 0 {
 		ctx.JSON(http.StatusOK, UserLoginResponse{
@@ -78,13 +84,15 @@ func (u *UserController) Register(ctx *gin.Context) {
 	log.Println("[username] ", username)
 	log.Println("[password] ", password)
 
-	//生成token
-	token := username + password
-
 	//验证并创建用户
 	user, code := u.userService.Register(username, password)
 	msg := codeMap[code]
 
+	//发放token
+	token, err := common.ReleaseToken(user)
+	if err != nil {
+		code = 500
+	}
 	//响应
 	if code == 0 {
 		ctx.JSON(http.StatusOK, UserLoginResponse{
@@ -103,27 +111,28 @@ func (u *UserController) Register(ctx *gin.Context) {
 }
 
 func (u *UserController) UserInfo(ctx *gin.Context) {
-	id, _ := strconv.ParseInt(ctx.Query("user_id"), 10, 64)
-	//token := ctx.Query("token")
-	log.Println("[user id]", id)
-
-	//验证token是否合法？逻辑放这里还是放拦截器
-
-	//获取用户对象并封装到DTO对象
-	user, code := u.userService.UserInfo(id)
-	msg := codeMap[code]
-	userDto := dto.UserDto{
-		Id:            user.ID,
-		Name:          user.Name,
-		FollowCount:   user.FollowCount,
-		FollowerCount: user.FollowerCount,
-		IsFollow:      false,
+	//id, _ := strconv.ParseInt(ctx.Query("user_id"), 10, 64)
+	//拦截器已经验证token，并已将请求的user对象放入上下文中
+	tempUser, _ := ctx.Get("user")
+	if tempUser == nil {
+		ctx.JSON(http.StatusOK, UserResponse{
+			Response: Response{StatusCode: 500, StatusMsg: "服务器错误"},
+		})
+		log.Println("[UserInfo] can not get context attribute \"user \" ")
 	}
+	id := tempUser.(model.User).ID
+
+	//token := ctx.Query("token")
+	log.Println("[userController UserInfo] user id =", id)
+
+	//获取用户DTO对象
+	userDto, code := u.userService.UserInfo(id)
+	msg := codeMap[code]
 
 	if code == 0 {
 		ctx.JSON(http.StatusOK, UserResponse{
 			Response: Response{StatusCode: code},
-			User:     userDto,
+			User:     *userDto,
 		})
 		log.Println("[user info] success !")
 	} else {

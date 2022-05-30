@@ -4,6 +4,7 @@ import (
 	"log"
 	"sync/atomic"
 
+	"github.com/RaymondCode/simple-demo/dto"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
 )
@@ -66,7 +67,7 @@ func (u *UserService) Login(name string, password string) (res *model.User, code
 }
 
 //用户信息，返回user的model实体类
-func (u *UserService) UserInfo(id int64) (res *model.User, code int32) {
+func (u *UserService) UserInfo(id int64) (res *dto.UserDto, code int32) {
 	user, err := u.userDao.QueryById(id)
 	if err != nil || user == nil {
 		return nil, 500
@@ -74,7 +75,9 @@ func (u *UserService) UserInfo(id int64) (res *model.User, code int32) {
 	if user.ID == 0 {
 		return nil, 404
 	}
-	return user, 0
+	//封装到DTO对象
+	userDto, _ := u.ToUserDto(user, false)
+	return userDto, 0
 }
 
 //用户粉丝数增1或减1,id为用户id，isAdd为True为粉丝数+1
@@ -107,4 +110,19 @@ func (u *UserService) FollowerCountUpdate(id int64, isAdd bool) (res *model.User
 		return nil, 500
 	}
 	return res, 0
+}
+
+//User实体类转换为UserDto数据传输对象
+func (u *UserService) ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
+	if user.ID == 0 {
+		return nil, 404
+	}
+	userDto := dto.UserDto{
+		Id:            user.ID,
+		Name:          user.Name,
+		FollowCount:   user.FollowCount,
+		FollowerCount: user.FollowerCount,
+		IsFollow:      follow,
+	}
+	return &userDto, 0
 }
