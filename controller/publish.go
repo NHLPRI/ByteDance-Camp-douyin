@@ -2,7 +2,9 @@ package controller
 
 import (
 	"fmt"
+	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/service"
+	"github.com/minio/minio-go/v7"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -53,6 +55,7 @@ func Publish(c *gin.Context) {
 	user := usersLoginInfo[token]
 	finalName := fmt.Sprintf("%d_%s", user.Id, filename)
 	saveFile := filepath.Join("./public/", finalName)
+	//original save to local
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
 		c.JSON(http.StatusOK, Response{
 			StatusCode: 1,
@@ -60,6 +63,14 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
+	// Upload the zip file with FPutObject
+	minioClient := common.InitMinioClient()
+	info, err := minioClient.FPutObject(c, common.BUCKETNAME, finalName, saveFile, minio.PutObjectOptions{ContentType: "video/mp4"})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Printf("Successfully uploaded %s of size %d\n", finalName, info.Size)
 
 	c.JSON(http.StatusOK, Response{
 		StatusCode: 0,
