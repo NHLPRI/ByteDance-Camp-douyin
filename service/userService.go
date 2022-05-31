@@ -76,7 +76,7 @@ func (u *UserService) UserInfo(id int64) (res *dto.UserDto, code int32) {
 		return nil, 404
 	}
 	//封装到DTO对象
-	userDto, _ := u.ToUserDto(user, false)
+	userDto, _ := ToUserDto(user, false)
 	return userDto, 0
 }
 
@@ -113,7 +113,7 @@ func (u *UserService) FollowerCountUpdate(id int64, isAdd bool) (res *model.User
 }
 
 //User实体类转换为UserDto数据传输对象
-func (u *UserService) ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
+func ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
 	if user.ID == 0 {
 		return nil, 404
 	}
