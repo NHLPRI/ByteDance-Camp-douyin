@@ -29,9 +29,9 @@ type Video struct {
 
 //关注表
 type Follow struct {
-	ID     int64 `gorm:"primary_key"`
-	UserID int64 `gorm:"not null"`
-	FansID int64 `gorm:"not null"`
+	ID       int64 `gorm:"primary_key"`
+	UserID   int64 `gorm:"not null"`
+	FollowID int64 `gorm:"not null"`
 }
 
 //点赞表
