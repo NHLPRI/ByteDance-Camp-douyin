@@ -39,10 +39,11 @@ func ReleaseToken(user *model.User) (token string, err error) {
 		},
 	}
 
-	//根据指定的签名算法对header和payload信息加密得到签名，生成token对象
+	//指定签名算法，生成token对象
 	tokenObj := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	//根据jwtKey私钥对token对象加密生成token字符串
+	//根据签名算法和密钥，对header和payload部分进行签名，并通过Base64URL生成token字符串
+	//得到的token字符串是未加密的，header和payload部分可见
 	tokenString, err := tokenObj.SignedString(jwtKey)
 
 	if err != nil {
