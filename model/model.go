@@ -44,7 +44,7 @@ type Like struct {
 type Comment struct {
 	ID        int64  `json:"id" gorm:"primary_key"`
 	UserID    int64  `json:"user_id" gorm:"not null"`
-	VideoID   int64  `json:"video_id" gorm:"nor null"`
+	VideoID   int64  `json:"video_id" gorm:"not null"`
 	Content   string `gorm:"type:longText"`
 	Floor     uint
 	CreatedAt time.Time
