@@ -6,7 +6,7 @@ datasource:
   host: 119.29.184.229
   port: 3306
   #database: dousheng
-  database: JiaYuanDB
+  database: lghTest
   username: root
   #password: 156489
   password: Lgh1906200123.

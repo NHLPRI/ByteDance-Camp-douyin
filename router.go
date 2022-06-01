@@ -37,7 +37,9 @@ func initRouter(r *gin.Engine) {
 
 	// extra apis - II
 	apiRouter.POST("/relation/action/", middleware.TokenValidate(), controller.RelationAction)
+	//用户关注列表
 	apiRouter.GET("/relation/follow/list/", middleware.TokenValidate(), controller.FollowList)
+	//用户粉丝列表
 	apiRouter.GET("/relation/follower/list/", middleware.TokenValidate(), controller.FollowerList)
 
 	//测试路由
