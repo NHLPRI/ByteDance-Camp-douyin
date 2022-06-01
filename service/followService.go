@@ -135,3 +135,10 @@ func (f *followService) Fans(id int64) []model.Follow {
 	return fans
 
 }
+
+//根据user_id以及follow_id查询是否存在这一条记录
+
+func (f *followService) FindFollowsExit(user_id int64, to_user_id int64) *model.Follow {
+	follow := f.followDao.Find(user_id, to_user_id)
+	return follow
+}
