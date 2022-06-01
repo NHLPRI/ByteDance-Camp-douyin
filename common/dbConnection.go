@@ -21,6 +21,7 @@ func GetDB() *gorm.DB {
 func initConfig() {
 	log.Println(">>> Reading configuration file ......")
 	workDir, _ := os.Getwd()
+	fmt.Println(workDir)
 	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "/config")
@@ -54,6 +55,9 @@ func InitDbConnection() *gorm.DB {
 	host := viper.GetString("datasource.host")
 	port := viper.GetString("datasource.port")
 	database := viper.GetString("datasource.database")
+	//database:="lghTest"
+	fmt.Println(database)
+
 	username := viper.GetString("datasource.username")
 	password := viper.GetString("datasource.password")
 	charset := viper.GetString("datasource.charset")
