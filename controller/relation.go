@@ -186,7 +186,7 @@ func FollowerList(c *gin.Context) {
 			var to_follow bool
 
 			//判断是否互关
-			follow := followService.FindFollowsExit(id, val.ID)
+			follow := followService.FindFollowsExist(id, val.ID)
 			if follow == nil {
 				to_follow = false
 			} else {
