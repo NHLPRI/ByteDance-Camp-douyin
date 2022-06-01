@@ -113,6 +113,7 @@ func (u *UserService) FollowerCountUpdate(id int64, isAdd bool) (res *model.User
 }
 
 //User实体类转换为UserDto数据传输对象
+
 func ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
 	if user.ID == 0 {
 		return nil, 404
@@ -125,4 +126,15 @@ func ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
 		IsFollow:      follow,
 	}
 	return &userDto, 0
+}
+
+//通过用户ID查找用户
+
+func (u *UserService) FindUserById(id int64) (*model.User, error) {
+	log.Println("[userService FindUserById]")
+	user, err := u.userDao.QueryById(id)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
