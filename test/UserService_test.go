@@ -41,13 +41,14 @@ func Test_FollowDao(t *testing.T) {
 	//	fmt.Println(err)
 	//}
 
-	follow := followDao.Find(111, 2)
-	//
-	if follow == nil {
-		fmt.Println("不存在这条记录")
-	} else {
-		fmt.Println(*follow)
-	}
+	//follow := followDao.Find(111, 2)
+	////
+	//if follow == nil {
+	//	fmt.Println("不存在这条记录")
+	//} else {
+	//	fmt.Println(*follow)
+	//}
+
 	//
 	//follow=followDao.Find(2,1)
 	//
@@ -64,5 +65,10 @@ func Test_FollowDao(t *testing.T) {
 	//for _,val:=range follows{
 	//	fmt.Println(val)
 	//}
+
+	err := followDao.Delete(1, 2)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 }
