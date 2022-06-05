@@ -1,8 +1,10 @@
 package controller
 
-//本文件夹用于存储测试用的临时数据
+import "github.com/RaymondCode/simple-demo/dto"
 
-var DemoVideos = []Video{
+//本文件用于存储测试用的临时数据
+
+var DemoVideos = []dto.VideoDto{
 	{
 		Id:            1,
 		Author:        DemoUser,
@@ -23,7 +25,7 @@ var DemoVideos = []Video{
 	},
 }
 
-var DemoComments = []Comment{
+var DemoComments = []dto.CommentDto{
 	{
 		Id:         1,
 		User:       DemoUser,
@@ -32,9 +34,9 @@ var DemoComments = []Comment{
 	},
 }
 
-var DemoUser = User{
+var DemoUser = dto.UserDto{
 	Id:            1,
-	Name:          "国家防脱发研究院",
+	Name:          "jiayuan01",
 	FollowCount:   0,
 	FollowerCount: 0,
 	IsFollow:      false,

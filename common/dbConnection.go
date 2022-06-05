@@ -5,14 +5,14 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var DB *gorm.DB
 
+//获取数据库对象
 func GetDB() *gorm.DB {
 	return DB
 }
@@ -21,6 +21,7 @@ func GetDB() *gorm.DB {
 func initConfig() {
 	log.Println(">>> Reading configuration file ......")
 	workDir, _ := os.Getwd()
+	fmt.Println(workDir)
 	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "/config")
@@ -29,6 +30,19 @@ func initConfig() {
 	if err != nil {
 		log.Println("[InitConfig error]>>>", err)
 	}
+}
+
+func initTable(db *gorm.DB) {
+	//db.AutoMigrate(&model.User{}, &model.Video{}, &model.Follow{}, &model.Comment{}, &model.Like{})
+	//
+	//db.Model(&model.Video{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Follow{}).AddForeignKey("fans_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Like{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	//db.Model(&model.Comment{}).AddForeignKey("video_id", "videos(id)", "RESTRICT", "RESTRICT")
+	//log.Println("[Init Table] finish !")
 }
 
 //建立数据库连接
@@ -41,6 +55,9 @@ func InitDbConnection() *gorm.DB {
 	host := viper.GetString("datasource.host")
 	port := viper.GetString("datasource.port")
 	database := viper.GetString("datasource.database")
+	//database:="lghTest"
+	fmt.Println(database)
+
 	username := viper.GetString("datasource.username")
 	password := viper.GetString("datasource.password")
 	charset := viper.GetString("datasource.charset")
@@ -59,6 +76,9 @@ func InitDbConnection() *gorm.DB {
 	if err != nil {
 		panic("failed to connect database: err>>>" + err.Error())
 	}
+
+	//初始化数据库表
+	//initTable(db)
 
 	DB = db
 	log.Println(">>> Database connection established successfully !!!")

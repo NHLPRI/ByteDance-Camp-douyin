@@ -5,7 +5,9 @@ datasource:
   #host: 127.0.0.1
   host: 119.29.184.229
   port: 3306
-  database: dousheng
+  #database: dousheng
+  database: lghTest
   username: root
+  #password: 156489
   password: Lgh1906200123.
   charset: utf8
