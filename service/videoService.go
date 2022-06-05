@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
 	"log"
 )
@@ -51,4 +52,30 @@ func (v *VideoService) PublishList(userId int64) ([]dto.VideoDto, error) {
 	}
 	return videoList, nil
 
+}
+
+// 通过用户ID查找用户
+func (v *VideoService) FindVideoById(id int64) (*model.Video, error) {
+	video, err := v.videoDao.QueryById(id)
+	if err != nil {
+		return nil, err
+	}
+	return video, nil
+}
+
+// Video实体类转换为VideoDto数据传输对象
+func (v *VideoService) ToVideoDto(video *model.Video, like bool) (res *dto.VideoDto, code int32) {
+	if video.ID == 0 {
+		return nil, 404
+	}
+	videoDto := dto.VideoDto{
+		Id:            video.ID,
+		Title:         video.Title,
+		PlayUrl:       video.PlayURL,
+		CoverUrl:      video.CoverURL,
+		FavoriteCount: video.FavouriteCount,
+		CommentCount:  video.CommentCount,
+		IsFavorite:    like,
+	}
+	return &videoDto, 0
 }
