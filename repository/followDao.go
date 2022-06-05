@@ -53,13 +53,14 @@ func (u *FollowDao) Find(user_id int64, to_user_id int64) *model.Follow {
 删除follow字段,返回值为error
 */
 
-func (u *FollowDao) Delete(id int64) error {
+func (u *FollowDao) Delete(user_id int64, follow_id int64) error {
 
 	//err:=u.db.Delete(follow).Error
+	////return err
+	//err := u.db.Table("follows").Delete(user_id)
 	//return err
-	err := u.db.Delete(id).Error
+	err := u.db.Table("follows").Where("user_id = ? and follow_id = ?", user_id, follow_id).Delete(&model.Follow{}).Error
 	return err
-
 }
 
 /**
