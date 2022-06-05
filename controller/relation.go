@@ -241,17 +241,6 @@ func FollowerList(c *gin.Context) {
 				}})
 			}
 
-			//true为关注,false为未关注
-			//var to_follow bool
-
-			////判断是否互关
-			//follow := followService.FindFollowsExit(id, user.ID)
-			//if follow == nil {
-			//	to_follow = false
-			//} else {
-			//	to_follow = true
-			//}
-
 			to_follow := util.JudgeIsFollow(id, user.ID)
 
 			log.Println("to_follow:", to_follow)
