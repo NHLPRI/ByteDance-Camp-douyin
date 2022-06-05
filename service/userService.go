@@ -111,18 +111,3 @@ func (u *UserService) FollowerCountUpdate(id int64, isAdd bool) (res *model.User
 	}
 	return res, 0
 }
-
-//User实体类转换为UserDto数据传输对象
-func ToUserDto(user *model.User, follow bool) (res *dto.UserDto, code int32) {
-	if user.ID == 0 {
-		return nil, 404
-	}
-	userDto := dto.UserDto{
-		Id:            user.ID,
-		Name:          user.Name,
-		FollowCount:   user.FollowCount,
-		FollowerCount: user.FollowerCount,
-		IsFollow:      follow,
-	}
-	return &userDto, 0
-}

@@ -57,7 +57,7 @@ func (u *UserController) Login(ctx *gin.Context) {
 	token, err := common.ReleaseToken(user)
 	if err != nil {
 		code = 500
-		log.Println("[error]", err)
+		log.Println("[userController Login token err]", err)
 	}
 
 	if code == 0 {
@@ -66,12 +66,12 @@ func (u *UserController) Login(ctx *gin.Context) {
 			UserId:   user.ID,
 			Token:    token,
 		})
-		log.Println("[login method] login success !")
+		log.Println("[userController Login] login success !")
 	} else {
 		ctx.JSON(http.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: code, StatusMsg: msg},
 		})
-		log.Println("[login method] login failed !")
+		log.Println("[userController Login] login failed !")
 	}
 
 }
@@ -100,12 +100,12 @@ func (u *UserController) Register(ctx *gin.Context) {
 			UserId:   user.ID,
 			Token:    token,
 		})
-		log.Println("[register method] register success !")
+		log.Println("[userController register] register success !")
 	} else {
 		ctx.JSON(http.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: code, StatusMsg: msg},
 		})
-		log.Println("[register method] register failed !")
+		log.Println("[userController register] register failed !")
 	}
 
 }

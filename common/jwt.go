@@ -18,7 +18,7 @@ type Claims struct {
 
 func ReleaseToken(user *model.User) (token string, err error) {
 	if user == nil || user.ID == 0 {
-		return "", errors.New("user model is null or user is not exists")
+		return "", errors.New("[common-ReleaseToken] user model is null or user is not exists")
 	}
 	//设置过期时间: one week
 	expirationTime := time.Now().Add(7 * 24 * time.Hour)

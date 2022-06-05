@@ -22,7 +22,7 @@ func TokenValidate() gin.HandlerFunc {
 				"status_code": 407,
 				"status_msg":  "token不合法",
 			})
-			log.Println("[tokenString error] is not Bearer token")
+			log.Println("[TokenValidate] tokenString is not Bearer token")
 			ctx.Abort()
 			return
 		}
