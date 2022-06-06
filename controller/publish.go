@@ -48,6 +48,7 @@ func Publish(c *gin.Context) {
 	db := common.GetDB()
 	var user model.User
 	db.First(&user, userId) //通过userId查询用户记录并封装
+	//用户不存在
 	if user.ID == 0 {
 		c.JSON(http.StatusOK, Response{StatusCode: 404, StatusMsg: "用户不存在"})
 		return
@@ -64,7 +65,7 @@ func Publish(c *gin.Context) {
 	//视频通过
 	filename := filepath.Base(data.Filename)
 
-	finalName := fmt.Sprintf("%d_%s", user.ID, filename)
+	finalName := fmt.Sprintf("%d_%d_%s", user.ID, time.Now().Unix(), filename)
 	saveFile := filepath.Join("./public/", finalName)
 	//original save to local
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
@@ -102,14 +103,14 @@ func Publish(c *gin.Context) {
 	}
 	err1 := videoController.videoService.Public_action(userId, finalName, titleString)
 	if err1 != nil {
-		log.Printf("上传数据库失败")
+		log.Printf("[上传数据库失败]")
 		c.JSON(http.StatusOK, Response{
 			StatusCode: 500,
 			StatusMsg:  "server error",
 		})
 		return
 	} else {
-		log.Printf("上传数据库成功")
+		log.Printf("[上传数据库成功]")
 	}
 	c.JSON(http.StatusOK, Response{
 		StatusCode: 0,
