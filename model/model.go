@@ -25,6 +25,7 @@ type Video struct {
 	FavouriteCount int64  `json:"favourite_count" gorm:"not null"`
 	CommentCount   int64  `json:"common_count" gorm:"not null"`
 	Title          string `json:"title" gorm:"type:varchar(255);not null"`
+	Create_time    int64
 }
 
 //关注表

@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 
-
 	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/dto"
 	"github.com/RaymondCode/simple-demo/model"
@@ -14,9 +13,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-
-	"strconv"
-
 )
 
 type VideoListResponse struct {

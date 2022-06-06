@@ -1,9 +1,12 @@
 package service
 
 import (
+	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
 	"log"
+	"time"
 )
 
 type VideoService struct {
@@ -52,6 +55,7 @@ func (v *VideoService) PublishList(userId int64) ([]dto.VideoDto, error) {
 	return videoList, nil
 
 }
+
 //根据lasttime返回视频流的videolist
 func (v *VideoService) Feed(lasttime int64) ([]dto.VideoDto, int64, error) {
 	//sql查询
