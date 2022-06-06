@@ -56,13 +56,16 @@ func (v *VideoService) PublishList(userId int64) ([]dto.VideoDto, error) {
 
 }
 
-//根据lasttime返回视频流的videolist
 func (v *VideoService) Feed(lasttime int64) ([]dto.VideoDto, int64, error) {
 	//sql查询
 	videos, err := v.videoDao.QueryBytime(lasttime)
-	if err != nil || len(videos) == 0 {
+	if err != nil {
 		log.Println(err.Error())
 		return nil, 0, err
+	}
+	//没有视频更新了
+	if len(videos) == 0 {
+		return nil, 0, nil
 	}
 	videoList := make([]dto.VideoDto, len(videos))
 	for i := 0; i < len(videos); i++ {
@@ -93,7 +96,6 @@ func (v *VideoService) Feed(lasttime int64) ([]dto.VideoDto, int64, error) {
 	}
 	return videoList, videos[len(videos)-1].Create_time, nil
 }
-
 //将发布的视频上传数据库
 func (v *VideoService) Public_action(userId int64, fileName string, titleString string) error {
 	var finalName string = "178.79.130.90:9000/" + common.BUCKETNAME + "/" + fileName
