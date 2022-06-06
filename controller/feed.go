@@ -45,6 +45,13 @@ func Feed(c *gin.Context) {
 			NextTime:  time.Now().Unix(),
 		})
 	}
+	//如果视频已经播放完了，返回null的视频数组和null的nexttime
+	if nextTime == 0 {
+		c.JSON(http.StatusOK, FeedResponse{
+			Response:  Response{StatusCode: 0},
+			VideoList: nil,
+		})
+	}
 	c.JSON(http.StatusOK, FeedResponse{
 		Response:  Response{StatusCode: 0},
 		VideoList: DemoVideos,
