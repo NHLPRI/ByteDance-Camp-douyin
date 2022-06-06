@@ -2,20 +2,21 @@ package controller
 
 import (
 	"fmt"
+
+
+	"github.com/RaymondCode/simple-demo/common"
+	"github.com/RaymondCode/simple-demo/dto"
+	"github.com/RaymondCode/simple-demo/model"
+	"github.com/RaymondCode/simple-demo/service"
+	"github.com/gin-gonic/gin"
+	"github.com/minio/minio-go/v7"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+
 	"strconv"
 
-	"github.com/RaymondCode/simple-demo/common"
-	"github.com/RaymondCode/simple-demo/model"
-	"github.com/RaymondCode/simple-demo/service"
-
-	"github.com/minio/minio-go/v7"
-
-	"github.com/RaymondCode/simple-demo/dto"
-	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
@@ -125,18 +126,28 @@ func PublishList(c *gin.Context) {
 	videoController := VideoController{
 		videoService: service.NewVideoServiceInstance(),
 	}
-	userIdStr := c.Query("user_id")
-	if userIdStr == "" {
-		log.Println("user_id doesn't exist")
-		c.JSON(http.StatusBadRequest, VideoListResponse{
-			Response: Response{
-				StatusCode: -1, StatusMsg: "user_id doesn't exist",
-			},
+	User, _ := c.Get("user")
+	if User == nil {
+		c.JSON(http.StatusNotFound, UserListResponse{
+			Response: Response{StatusCode: 400, StatusMsg: "用户不存在"},
 		})
-		return
+		log.Println("[PublishList]用户不存在")
 	}
-
-	userId, _ := strconv.ParseInt(userIdStr, 10, 64)
+	//token 鉴权
+	userId := User.(model.User).ID
+	//
+	//userIdStr := c.Query("user_id")
+	//if userIdStr == "" {
+	//	log.Println("user_id doesn't exist")
+	//	c.JSON(http.StatusBadRequest, VideoListResponse{
+	//		Response: Response{
+	//			StatusCode: -1, StatusMsg: "user_id doesn't exist",
+	//		},
+	//	})
+	//	return
+	//}
+	//
+	//userId, _ := strconv.ParseInt(userIdStr, 10, 64)
 	videos, err := videoController.videoService.PublishList(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, VideoListResponse{
