@@ -58,7 +58,7 @@ func (v *VideoDao) QueryByUserId(userId int64) ([]model.Video, error) {
 //按照时间排序查询
 func (v *VideoDao) QueryBytime(lasttime int64) ([]model.Video, error) {
 	var videos []model.Video
-	err := v.db.Where("create_time<=?", lasttime).Order("create_time desc").Limit(30).Find(&videos).Error
+	err := v.db.Where("create_time<?", lasttime).Order("create_time desc").Limit(30).Find(&videos).Error
 	if err != nil {
 		return nil, err
 	}
