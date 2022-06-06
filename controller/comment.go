@@ -3,19 +3,20 @@ package controller
 import (
 	"net/http"
 
+	"github.com/RaymondCode/simple-demo/dto"
 	"github.com/gin-gonic/gin"
 )
 
 //评论列表响应对象
 type CommentListResponse struct {
 	Response
-	CommentList []Comment `json:"comment_list,omitempty"`
+	CommentList []dto.CommentDto `json:"comment_list,omitempty"`
 }
 
 //评论操作响应对象
 type CommentActionResponse struct {
 	Response
-	Comment Comment `json:"comment,omitempty"`
+	Comment dto.CommentDto `json:"comment,omitempty"`
 }
 
 // CommentAction no practical effect, just check if token is valid
@@ -27,7 +28,7 @@ func CommentAction(c *gin.Context) {
 		if actionType == "1" {
 			text := c.Query("comment_text")
 			c.JSON(http.StatusOK, CommentActionResponse{Response: Response{StatusCode: 0},
-				Comment: Comment{
+				Comment: dto.CommentDto{
 					Id:         1,
 					User:       user,
 					Content:    text,
