@@ -26,7 +26,7 @@ func initRouter(r *gin.Engine) {
 
 	//video apis
 	apiRouter.GET("/feed/", controller.Feed)
-	apiRouter.POST("/publish/action/", middleware.TokenValidate(), controller.Publish)
+	apiRouter.POST("/publish/action/", controller.Publish)
 	apiRouter.GET("/publish/list/", middleware.TokenValidate(), controller.PublishList)
 
 	// extra apis - I

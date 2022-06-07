@@ -1,3 +1,6 @@
+# ByteDance-Camp-douyin
+第三届字节跳动青训营项目——极简版抖音
+=======
 # simple-demo
 
 ## 抖音项目服务端简单示例
