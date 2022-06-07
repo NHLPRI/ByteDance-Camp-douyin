@@ -56,6 +56,32 @@ func (v *VideoService) PublishList(userId int64) ([]dto.VideoDto, error) {
 
 }
 
+// 通过用户ID查找用户
+func (v *VideoService) FindVideoById(id int64) (*model.Video, error) {
+	video, err := v.videoDao.QueryById(id)
+	if err != nil {
+		return nil, err
+	}
+	return video, nil
+}
+
+// Video实体类转换为VideoDto数据传输对象
+func (v *VideoService) ToVideoDto(video *model.Video, like bool) (res *dto.VideoDto, code int32) {
+	if video.ID == 0 {
+		return nil, 404
+	}
+	videoDto := dto.VideoDto{
+		Id:            video.ID,
+		Title:         video.Title,
+		PlayUrl:       video.PlayURL,
+		CoverUrl:      video.CoverURL,
+		FavoriteCount: video.FavouriteCount,
+		CommentCount:  video.CommentCount,
+		IsFavorite:    like,
+	}
+	return &videoDto, 0
+}
+
 func (v *VideoService) Feed(lasttime int64) ([]dto.VideoDto, int64, error) {
 	//sql查询
 	videos, err := v.videoDao.QueryBytime(lasttime)
@@ -96,6 +122,7 @@ func (v *VideoService) Feed(lasttime int64) ([]dto.VideoDto, int64, error) {
 	}
 	return videoList, videos[len(videos)-1].Create_time, nil
 }
+
 //将发布的视频上传数据库
 func (v *VideoService) Public_action(userId int64, fileName string, titleString string) error {
 	var finalName string = "178.79.130.90:9000/" + common.BUCKETNAME + "/" + fileName

@@ -6,12 +6,10 @@ import (
 	"log"
 )
 
-type commentService struct{
+type commentService struct {
 	commentDao repository.CommentDao
-	userDao   repository.UserDao
+	userDao    repository.UserDao
 }
-
-
 
 //初始化followService结构体
 
@@ -21,7 +19,7 @@ func InitCommentService() commentService {
 	log.Println("[InitFollowService func] success !")
 	return commentService{
 		commentDao: commentDao,
-		userDao:   userDao,
+		userDao:    userDao,
 	}
 }
 
@@ -30,7 +28,8 @@ func InitCommentService() commentService {
 func (c *commentService) Create(comment *model.Comment) (status_code int64, status_msg string) {
 	if err := c.commentDao.Create(comment); err != nil {
 		log.Println(err)
-		return 500, "新增评论失败"}
+		return 500, "新增评论失败"
+	}
 	return 0, "评论成功"
 }
 

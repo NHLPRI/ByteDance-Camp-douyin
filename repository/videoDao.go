@@ -55,6 +55,7 @@ func (v *VideoDao) QueryByUserId(userId int64) ([]model.Video, error) {
 	return videos, nil
 
 }
+
 //按照时间排序查询
 func (v *VideoDao) QueryBytime(lasttime int64) ([]model.Video, error) {
 	var videos []model.Video

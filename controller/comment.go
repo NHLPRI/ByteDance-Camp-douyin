@@ -35,20 +35,20 @@ func CommentAction(c *gin.Context) {
 		return
 	}
 	u, ok := user.(model.User)
-	if !ok{
+	if !ok {
 		log.Println("User断言失败")
 	}
 	log.Println(user)
 	videoID, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
-	if err != nil{
+	if err != nil {
 		log.Println("获取videoID失败")
 	}
 	action_type, _ := strconv.ParseInt(c.Query("video_id"), 10, 64)
-	if action_type != 1{
+	if action_type != 1 {
 		log.Println("获取action_type失败 action_type 不是1")
 	}
 	comment_text := c.Query("comment_text")
-	if len(comment_text) == 0{
+	if len(comment_text) == 0 {
 		c.JSON(http.StatusNotFound, UserListResponse{
 			Response: Response{StatusCode: 404, StatusMsg: "用户不存在"},
 		})
@@ -76,7 +76,6 @@ func CommentAction(c *gin.Context) {
 		c.JSON(http.StatusOK, Response{StatusCode: 0, StatusMsg: status_msg})
 	}
 
-
 }
 
 // CommentList all videos have same demo comment list
@@ -84,7 +83,7 @@ func CommentList(c *gin.Context) {
 	//获取URL中的token和视频id
 	videoID, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
 	log.Println(videoID)
-	if err != nil{
+	if err != nil {
 		c.JSON(http.StatusNotFound, CommentListResponse{
 			Response:    Response{},
 			CommentList: nil,
@@ -94,16 +93,16 @@ func CommentList(c *gin.Context) {
 	comments := commentService.Find(int64(videoID))
 	log.Println(comments)
 	// 没有评论提醒下
-	if len(comments) == 0{
+	if len(comments) == 0 {
 		c.JSON(http.StatusOK, CommentListResponse{CommentList: nil, Response: Response{
 			StatusCode: 0,
 			StatusMsg:  "该用户没有关注其他人",
 		}})
-	}else {
+	} else {
 		commentsLen := len(comments)
 		dtoComments := make([]dto.CommentDto, commentsLen)
 		// 转换格式
-		for i, val := range comments{
+		for i, val := range comments {
 			user, err := commentService.FindUserById(val.UserID)
 			log.Println(user)
 			if err != nil {
@@ -115,8 +114,8 @@ func CommentList(c *gin.Context) {
 				}})
 			}
 			dtoComments[i] = dto.CommentDto{
-				Id:         val.ID,
-				User:       dto.UserDto{
+				Id: val.ID,
+				User: dto.UserDto{
 					Id:            user.ID,
 					Name:          user.Name,
 					FollowCount:   user.FollowCount,
