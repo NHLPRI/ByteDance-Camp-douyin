@@ -5,6 +5,7 @@ import (
 	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/jinzhu/gorm"
+	"log"
 )
 
 // Like的持久层对象
@@ -25,6 +26,7 @@ func (l *LikeDao) Create(like *model.Like) (*model.Like, error) {
 	err := l.db.Create(like).Error
 	if err != nil {
 		return nil, err
+		log.Println("Dao层创建记录失败！")
 	}
 	return like, nil
 }
@@ -33,7 +35,7 @@ func (l *LikeDao) Create(like *model.Like) (*model.Like, error) {
 删除点赞记录,取消赞
 */
 func (l *LikeDao) Delete(id int64) error {
-	err := l.db.Delete(id).Error
+	err := l.db.Table("likes").Where("id = ? ", id).Delete(&model.Like{}).Error
 	return err
 }
 

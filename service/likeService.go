@@ -4,7 +4,6 @@ import (
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
 	"log"
-	"sync/atomic"
 )
 
 type LikeService struct {
@@ -31,35 +30,49 @@ func InitLikeService() LikeService {
 */
 func (l *LikeService) LikeAction(user_id int64, video_id int64, action_type int64) (status_code int32, status_msg string) {
 
+	log.Println("service_user_id:", user_id)
+	log.Println("service_video_id:", video_id)
+	log.Println("service_action_type", action_type)
 	// 点赞操作
 	if action_type == 1 {
 		// 往like表中插入一条数据
-		err, _ := l.likeDao.Create(&model.Like{
+		_, err := l.likeDao.Create(&model.Like{
 			UserID:  user_id,
 			VideoID: video_id,
 		})
 
 		if err != nil {
 			log.Println(err)
-			return 500, "点赞失败"
+			return 500, "点赞记录添加到likes表失败！"
+		} else {
+			log.Println("点赞记录添加到likes表成功！")
 		}
 
-		// 更新视频表的的点赞数
-		video, error := l.videoDao.QueryById(video_id)
-		if error != nil {
-			log.Println("[add video_favorite_count error]", error)
+		// 更新视频表的的点赞数+1
+		video, _ := l.videoDao.QueryById(video_id)
+		log.Println("待更新的video：", video)
+		err = l.videoDao.Update(&model.Video{
+			FavouriteCount: video.FavouriteCount + 1,
+			ID:             video.ID,
+			UserID:         video.UserID,
+			PlayURL:        video.PlayURL,
+			CoverURL:       video.CoverURL,
+			CommentCount:   video.CommentCount,
+			Title:          video.Title,
+		})
+		if err != nil {
+			log.Println("[add video_favorite_count error]", err)
 		}
 		if video.ID == 0 {
 			log.Println("Video don't exit")
 			return 404, "此视频不存在"
 		}
-		atomic.AddInt64(&video.FavouriteCount, 1)
 
 		return 0, "点赞成功"
 
 	} else if action_type == 2 { // 取消赞
 
-		// 得到记录
+		// 得到点赞记录
 		like := l.likeDao.Find(user_id, video_id)
 
 		if like == nil {
@@ -67,22 +80,31 @@ func (l *LikeService) LikeAction(user_id int64, video_id int64, action_type int6
 		}
 
 		id := like.ID
+		log.Println("取消赞id", id)
 		err := l.likeDao.Delete(id)
 		if err != nil {
 			return 500, "取消赞数据库删除操作失败"
 		}
 
-		// 将视频表的关点赞数量减1
-		video, err := l.videoDao.QueryById(video_id)
+		// 更新视频表的的点赞数-1
+		video, _ := l.videoDao.QueryById(video_id)
+		log.Println("待更新的video：", video)
+		err = l.videoDao.Update(&model.Video{
+			FavouriteCount: video.FavouriteCount - 1,
+			ID:             video.ID,
+			UserID:         video.UserID,
+			PlayURL:        video.PlayURL,
+			CoverURL:       video.CoverURL,
+			CommentCount:   video.CommentCount,
+			Title:          video.Title,
+		})
 		if err != nil {
-			log.Println("[delete video_favorite_count error]", err)
-			return 500, "视频表减少点赞数失败"
+			log.Println("[reduce video_favorite_count error]", err)
 		}
 		if video.ID == 0 {
 			log.Println("Video don't exit")
-			return 404, "视频已经不存在不存在"
+			return 404, "此视频不存在"
 		}
-		atomic.AddInt64(&video.FavouriteCount, -1)
 
 		return 0, "取消点赞成功"
 
