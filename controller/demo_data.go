@@ -36,7 +36,7 @@ var DemoComments = []dto.CommentDto{
 
 var DemoUser = dto.UserDto{
 	Id:            1,
-	Name:          "国家防脱发研究院",
+	Name:          "jiayuan01",
 	FollowCount:   0,
 	FollowerCount: 0,
 	IsFollow:      false,
