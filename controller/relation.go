@@ -2,12 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"github.com/RaymondCode/simple-demo/model"
-	"github.com/RaymondCode/simple-demo/service"
-	"github.com/RaymondCode/simple-demo/util"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/RaymondCode/simple-demo/model"
+	"github.com/RaymondCode/simple-demo/service"
+	"github.com/RaymondCode/simple-demo/util"
 
 	"github.com/RaymondCode/simple-demo/dto"
 	"github.com/gin-gonic/gin"
@@ -32,22 +33,8 @@ func RelationAction(c *gin.Context) {
 		return
 	}
 
-	//token := c.Query("token")
-	//
-	//if _, exist := usersLoginInfo[token]; exist {
-	//	c.JSON(http.StatusOK, Response{StatusCode: 0})
-	//} else {
-	//	c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-	//}
-
 	f_id := c.Query("to_user_id")
-	//if !ok {
-	//	c.JSON(http.StatusNotFound, UserListResponse{
-	//		Response: Response{StatusCode: 404, StatusMsg: "用户不存在"},
-	//	})
-	//	log.Println("[RelationAction]用户[to_user_id]不存在")
-	//	return
-	//}
+
 	if f_id == "" {
 		c.JSON(http.StatusNotFound, UserListResponse{
 			Response: Response{StatusCode: 404, StatusMsg: "用户不存在"},
@@ -60,13 +47,7 @@ func RelationAction(c *gin.Context) {
 	}
 
 	a_type := c.Query("action_type")
-	//if !ok {
-	//	c.JSON(http.StatusNotFound, UserListResponse{
-	//		Response: Response{StatusCode: 404, StatusMsg: "action_type不存在"},
-	//	})
-	//	log.Println("[RelationAction]action_type不存在")
-	//	return
-	//}
+
 	if a_type == "" {
 		c.JSON(http.StatusNotFound, UserListResponse{
 			Response: Response{StatusCode: 404, StatusMsg: "用户不存在"},

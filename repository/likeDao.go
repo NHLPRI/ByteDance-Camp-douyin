@@ -2,10 +2,11 @@
 package repository
 
 import (
+	"log"
+
 	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/jinzhu/gorm"
-	"log"
 )
 
 // Like的持久层对象
@@ -25,8 +26,8 @@ func InitLikeDao() LikeDao {
 func (l *LikeDao) Create(like *model.Like) (*model.Like, error) {
 	err := l.db.Create(like).Error
 	if err != nil {
+		log.Println("Dao层创建记录失败 !")
 		return nil, err
-		log.Println("Dao层创建记录失败！")
 	}
 	return like, nil
 }

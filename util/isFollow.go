@@ -1,8 +1,9 @@
 package util
 
 import (
-	"github.com/RaymondCode/simple-demo/service"
 	"log"
+
+	"github.com/RaymondCode/simple-demo/service"
 )
 
 //判断是否互关
@@ -13,17 +14,6 @@ import (
 func JudgeIsFollow(user_id int64, follow_id int64) bool {
 
 	log.Println("judgeIsFollow running...")
-	//db:= common.InitDbConnection()
-	//defer db.Close()
-	//
-	//followDao:=repository.InitFollowDao()
-	//follow:=followDao.Find(user_id,follow_id)
-	//if follow==nil{
-	//	return false
-	//}else {
-	//	return true
-	//}
-
 	followService := service.InitFollowService()
 	f := followService.FindFollowsExist(user_id, follow_id)
 	if f == nil {

@@ -16,7 +16,7 @@ func TokenValidate() gin.HandlerFunc {
 		//从URL参数中获取token
 		tokenString := ctx.Query("token")
 
-		//检查是否是Bearer Token
+		//检查是否为空
 		if tokenString == "" {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"status_code": 407,
@@ -40,7 +40,7 @@ func TokenValidate() gin.HandlerFunc {
 			return
 		}
 
-		//token验证通过
+		//token验证通过，检查userid是否有效
 		userId := claims.ID
 		db := common.GetDB()
 		var user model.User

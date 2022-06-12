@@ -1,10 +1,11 @@
 package repository
 
 import (
+	"log"
+
 	"github.com/RaymondCode/simple-demo/common"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/jinzhu/gorm"
-	"log"
 )
 
 // follow的持久层对象
@@ -54,11 +55,6 @@ func (u *FollowDao) Find(user_id int64, to_user_id int64) *model.Follow {
 */
 
 func (u *FollowDao) Delete(user_id int64, follow_id int64) error {
-
-	//err:=u.db.Delete(follow).Error
-	////return err
-	//err := u.db.Table("follows").Delete(user_id)
-	//return err
 	err := u.db.Table("follows").Where("user_id = ? and follow_id = ?", user_id, follow_id).Delete(&model.Follow{}).Error
 	return err
 }

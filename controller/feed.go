@@ -19,16 +19,6 @@ type FeedResponse struct {
 	NextTime  int64          `json:"next_time,omitempty"`
 }
 
-//var codeMap = map[int32]string{
-//	0:   "success !",
-//	402: "密码或用户名字符长度不能超过32个字符",
-//	403: "用户名已存在",
-//	404: "用户不存在",
-//	405: "密码错误",
-//	406: "违规操作",
-//	500: "服务器错误",
-//}
-
 // Feed same demo video list for every request
 func Feed(c *gin.Context) {
 	videoController := VideoController{
